@@ -1,0 +1,133 @@
+{% extends "base.html" %} {% block title %}eCommerce - My Profile{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white py-3">
+          <div class="d-flex align-items-center">
+            <div class="display-1 me-3">
+              <i class="fas fa-user-circle"></i>
+            </div>
+            <div>
+              <h3 class="mb-0 display-6 fw-bold">
+                {{ user.username }}'s Profile
+              </h3>
+              <p class="mb-0 opacity-75">
+                Member since {{ user.created_at.strftime('%B %d, %Y') if
+                user.created_at else 'N/A' }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4">
+          <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+              <div class="card bg-light h-100">
+                <div class="card-body p-4 text-center">
+                  <h4 class="mb-3">Profile Stats</h4>
+
+                  <div class="d-flex justify-content-center mb-4">
+                    <div class="position-relative">
+                      <div class="display-4 mb-0">
+                        {{ average_rating|float|round(1) if average_rating else
+                        '0.0' }}
+                      </div>
+                      <div class="text-muted small">Average Rating Given</div>
+
+                      {% if average_rating %}
+                      <div class="mt-2">
+                        {% for i in range(1, 6) %} {% if i <=
+                        ((average_rating|float) / 2)|round(0, 'floor') %}
+                        <i class="fas fa-star text-warning"></i>
+                        {% elif i <= ((average_rating|float) / 2 + 0.5)|round(0,
+                        'floor') %}
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                        {% else %}
+                        <i class="far fa-star text-warning"></i>
+                        {% endif %} {% endfor %}
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  <div class="bg-white p-3 rounded shadow-sm">
+                    <h5 class="mb-1">{{ reviews|length }}</h5>
+                    <div class="text-muted small">Reviews</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-8">
+              <h4 class="mb-3">
+                <i class="fas fa-comment-alt me-2"></i>Your Reviews
+              </h4>
+
+              {% if reviews %}
+              <div class="list-group shadow-sm">
+                {% for review_obj in reviews %}
+                <div class="list-group-item border-0 mb-2">
+                  <div
+                    class="d-flex justify-content-between align-items-center mb-2"
+                  >
+                    <h5 class="mb-0">
+                      <a
+                        href="{{ url_for('item_detail', item_id=review_obj['item_id']) }}"
+                        class="text-decoration-none"
+                      >
+                        {{ review_obj['item_name'] }}
+                      </a>
+                    </h5>
+                    <span class="badge bg-primary rounded-pill px-3"
+                      >{{ review_obj['rating'] }}/10</span
+                    >
+                  </div>
+
+                  <div class="mb-2">
+                    {% for i in range(1, 6) %} {% if i <=
+                    ((review_obj['rating']|int) / 2)|round(0, 'floor') %}
+                    <i class="fas fa-star text-warning"></i>
+                    {% elif i <= ((review_obj['rating']|int) / 2 + 0.5)|round(0,
+                    'floor') %}
+                    <i class="fas fa-star-half-alt text-warning"></i>
+                    {% else %}
+                    <i class="far fa-star text-warning"></i>
+                    {% endif %} {% endfor %}
+                  </div>
+
+                  <p class="mb-1">{{ review_obj['review'] }}</p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <small class="text-muted"
+                      >Posted {{ review_obj['date'].strftime('%B %d, %Y') if
+                      review_obj.get('date') else 'recently' }}</small
+                    >
+                    <a href="#" class="btn btn-sm btn-outline-primary">
+                      <i class="fas fa-pencil-alt me-1"></i>Edit
+                    </a>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>You haven't submitted any
+                reviews yet.
+                <a href="{{ url_for('index') }}" class="alert-link"
+                  >Browse our collection</a
+                >
+                and share your thoughts!
+              </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

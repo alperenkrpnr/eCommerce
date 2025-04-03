@@ -1,0 +1,320 @@
+{% extends "base.html" %} {% block title %}eCommerce - Add Product{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white py-3">
+        <h4 class="mb-0">
+          <i class="fas fa-plus-circle me-2"></i>Add New Product
+        </h4>
+      </div>
+      <div class="card-body p-4">
+        <form
+          method="POST"
+          id="addItemForm"
+          class="needs-validation"
+          novalidate
+        >
+          <div class="row">
+            <div class="col-md-8 mb-4">
+              <label for="name" class="form-label">Product Name</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-tag text-muted"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control border-start-0"
+                  id="name"
+                  name="name"
+                  placeholder="Enter product name"
+                  required
+                />
+                <div class="invalid-feedback">Please enter a product name</div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+              <label for="category" class="form-label">Category</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-folder text-muted"></i>
+                </span>
+                <select
+                  class="form-select border-start-0"
+                  id="category"
+                  name="category"
+                  required
+                >
+                  <option value="" selected disabled>Select category</option>
+                  <option value="Vinyls">Vinyls</option>
+                  <option value="Antique Furniture">Antique Furniture</option>
+                  <option value="GPS Sport Watches">GPS Sport Watches</option>
+                  <option value="Running Shoes">Running Shoes</option>
+                </select>
+                <div class="invalid-feedback">Please select a category</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="description" class="form-label">Description</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0">
+                <i class="fas fa-align-left text-muted"></i>
+              </span>
+              <textarea
+                class="form-control border-start-0"
+                id="description"
+                name="description"
+                rows="4"
+                placeholder="Enter product description"
+                required
+              ></textarea>
+              <div class="invalid-feedback">
+                Please enter a product description
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-4">
+              <label for="price" class="form-label">Price ($)</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-dollar-sign text-muted"></i>
+                </span>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  class="form-control border-start-0"
+                  id="price"
+                  name="price"
+                  placeholder="0.00"
+                  required
+                />
+                <div class="invalid-feedback">Please enter a valid price</div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+              <label for="seller" class="form-label">Seller</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-store text-muted"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control border-start-0"
+                  id="seller"
+                  name="seller"
+                  placeholder="Enter seller name"
+                  required
+                />
+                <div class="invalid-feedback">Please enter a seller</div>
+              </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+              <label for="stock" class="form-label">Stock Quantity</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-cubes text-muted"></i>
+                </span>
+                <input
+                  type="number"
+                  min="0"
+                  class="form-control border-start-0"
+                  id="stock"
+                  name="stock"
+                  placeholder="Enter quantity"
+                  value="1"
+                  required
+                />
+                <div class="invalid-feedback">Please enter stock quantity</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="image" class="form-label">Image URL</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0">
+                <i class="fas fa-image text-muted"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control border-start-0"
+                id="image"
+                name="image"
+                placeholder="Enter image URL"
+              />
+            </div>
+            <div class="form-text mt-2">
+              <i class="fas fa-info-circle me-1 text-muted"></i>
+              Leave empty to use a default image
+            </div>
+          </div>
+
+          <!-- Category-specific fields (initially hidden) -->
+          <div class="category-specific-fields">
+            <!-- GPS Sport Watches -->
+            <div id="batteryLifeGroup" class="mb-4" style="display: none">
+              <label for="battery_life" class="form-label"
+                >Battery Life (hours)</label
+              >
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-battery-full text-muted"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control border-start-0"
+                  id="battery_life"
+                  name="battery_life"
+                  placeholder="e.g., 24 hours"
+                />
+              </div>
+            </div>
+
+            <!-- Antique Furniture & Vinyls -->
+            <div id="ageGroup" class="mb-4" style="display: none">
+              <label for="age" class="form-label">Age / Year</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-calendar-alt text-muted"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control border-start-0"
+                  id="age"
+                  name="age"
+                  placeholder="e.g., 1975 or 40 years"
+                />
+              </div>
+            </div>
+
+            <!-- Running Shoes -->
+            <div id="sizeGroup" class="mb-4" style="display: none">
+              <label for="size" class="form-label">Available Sizes</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-ruler text-muted"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control border-start-0"
+                  id="size"
+                  name="size"
+                  placeholder="e.g., 7, 8, 9, 10, 11"
+                />
+              </div>
+            </div>
+
+            <div id="materialGroup" class="mb-4" style="display: none">
+              <label for="material" class="form-label">Material</label>
+              <div class="input-group">
+                <span class="input-group-text bg-white border-end-0">
+                  <i class="fas fa-tshirt text-muted"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control border-start-0"
+                  id="material"
+                  name="material"
+                  placeholder="e.g., Mesh, Leather, Synthetic"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <a
+                href="{{ url_for('admin_dashboard') }}"
+                class="btn btn-outline-secondary w-100 py-2"
+              >
+                <i class="fas fa-arrow-left me-2"></i>Cancel
+              </a>
+            </div>
+            <div class="col-md-6">
+              <button type="submit" class="btn btn-primary w-100 py-2">
+                <i class="fas fa-plus-circle me-2"></i>Add Product
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Form validation and category-specific fields handler
+  (function () {
+    "use strict";
+
+    // Fetch the form and category selector
+    const form = document.getElementById("addItemForm");
+    const categorySelect = document.getElementById("category");
+
+    // Function to handle category changes
+    function handleCategoryChange() {
+      const category = categorySelect.value;
+
+      // Hide all category-specific fields
+      document.getElementById("batteryLifeGroup").style.display = "none";
+      document.getElementById("ageGroup").style.display = "none";
+      document.getElementById("sizeGroup").style.display = "none";
+      document.getElementById("materialGroup").style.display = "none";
+
+      // Show relevant fields based on category
+      if (category === "GPS Sport Watches") {
+        document.getElementById("batteryLifeGroup").style.display = "block";
+      } else if (category === "Antique Furniture" || category === "Vinyls") {
+        document.getElementById("ageGroup").style.display = "block";
+      } else if (category === "Running Shoes") {
+        document.getElementById("sizeGroup").style.display = "block";
+        document.getElementById("materialGroup").style.display = "block";
+      }
+    }
+
+    // Add event listener for category change
+    categorySelect.addEventListener("change", handleCategoryChange);
+
+    // Apply validation to all forms with needs-validation class
+    var forms = document.querySelectorAll(".needs-validation");
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener(
+        "submit",
+        function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add("was-validated");
+        },
+        false
+      );
+    });
+
+    // Add some visual effects when the form loads
+    document.addEventListener("DOMContentLoaded", function () {
+      // Fade in the form elements sequentially
+      const formElements = document.querySelectorAll(
+        ".card, .form-label, .input-group"
+      );
+      formElements.forEach((element, index) => {
+        setTimeout(() => {
+          element.style.opacity = "0";
+          element.style.transition = "opacity 0.3s ease";
+          setTimeout(() => {
+            element.style.opacity = "1";
+          }, 50);
+        }, index * 30);
+      });
+    });
+  })();
+</script>
+{% endblock %}

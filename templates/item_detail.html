@@ -1,0 +1,388 @@
+{% extends "base.html" %} {% block title %}eCommerce - {{ item.name }}{%
+endblock %} {% block content %}
+<div class="container py-4">
+  <!-- Product Info Section -->
+  <div class="row g-4 mb-5">
+    <!-- Product Image -->
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <div class="position-relative mb-3">
+        <div class="ratio ratio-1x1 rounded overflow-hidden shadow-sm">
+          <img src="{{ item.image }}" class="img-cover" alt="{{ item.name }}" />
+        </div>
+
+        {% if item.rating %}
+        <div class="position-absolute top-0 end-0 m-3">
+          <div
+            class="bg-dark bg-opacity-75 text-white rounded-pill py-2 px-3 d-flex align-items-center"
+          >
+            <i class="fas fa-star text-warning me-2"></i>
+            <span class="fw-bold">{{ item.rating|round(1) }}/10</span>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Additional Images -->
+      <div class="row g-2">
+        {% if item.additional_images %} {% for img in item.additional_images[:4]
+        %}
+        <div class="col-3">
+          <div class="ratio ratio-1x1 rounded overflow-hidden">
+            <img
+              src="{{ img }}"
+              class="img-cover cursor-pointer product-thumbnail"
+              alt="{{ item.name }}"
+            />
+          </div>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
+    </div>
+
+    <!-- Product Details -->
+    <div class="col-lg-6">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{{ url_for('index') }}">Home</a>
+          </li>
+          <li class="breadcrumb-item"><a href="#">{{ item.category }}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ item.name }}
+          </li>
+        </ol>
+      </nav>
+
+      <h1 class="display-5 fw-bold mb-3">{{ item.name }}</h1>
+
+      <div class="d-flex align-items-center mb-3">
+        <div class="me-3">
+          {% for i in range(1, 6) %} {% if item.rating and i <=
+          ((item.rating|float) / 2)|round(0, 'floor') %}
+          <i class="fas fa-star text-warning"></i>
+          {% elif item.rating and i <= ((item.rating|float) / 2 + 0.5)|round(0,
+          'floor') %}
+          <i class="fas fa-star-half-alt text-warning"></i>
+          {% else %}
+          <i class="far fa-star text-warning"></i>
+          {% endif %} {% endfor %}
+        </div>
+        <span class="text-muted small">{{ item.reviews|length }} reviews</span>
+      </div>
+
+      <div class="mb-4">
+        <h3 class="text-primary fw-bold mb-0">{{ item.price }} TL</h3>
+        {% if item.old_price %}
+        <div class="d-flex align-items-center">
+          <span class="text-decoration-line-through text-muted me-2"
+            >{{ item.old_price }} TL</span
+          >
+          <span class="badge bg-danger"
+            >{{ ((1 - (item.price / item.old_price)) * 100)|round|int }}%
+            OFF</span
+          >
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="mb-4">
+        <p class="lead">{{ item.description }}</p>
+      </div>
+
+      <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+          <div class="bg-light p-3 rounded">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-tag text-primary me-2"></i>
+              <span class="fw-medium">Category</span>
+            </div>
+            <span class="badge bg-secondary">{{ item.category }}</span>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <div class="bg-light p-3 rounded">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-store text-primary me-2"></i>
+              <span class="fw-medium">Seller</span>
+            </div>
+            <span>{{ item.seller }}</span>
+          </div>
+        </div>
+
+        {% if item.battery_life %}
+        <div class="col-md-6 mb-3">
+          <div class="bg-light p-3 rounded">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-battery-full text-primary me-2"></i>
+              <span class="fw-medium">Battery Life</span>
+            </div>
+            <span>{{ item.battery_life }}</span>
+          </div>
+        </div>
+        {% endif %} {% if item.age %}
+        <div class="col-md-6 mb-3">
+          <div class="bg-light p-3 rounded">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-calendar-alt text-primary me-2"></i>
+              <span class="fw-medium">Age</span>
+            </div>
+            <span>{{ item.age }}</span>
+          </div>
+        </div>
+        {% endif %} {% if item.size %}
+        <div class="col-md-6 mb-3">
+          <div class="bg-light p-3 rounded">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-ruler-combined text-primary me-2"></i>
+              <span class="fw-medium">Size</span>
+            </div>
+            <span>{{ item.size }}</span>
+          </div>
+        </div>
+        {% endif %} {% if item.material %}
+        <div class="col-md-6 mb-3">
+          <div class="bg-light p-3 rounded">
+            <div class="d-flex align-items-center mb-2">
+              <i class="fas fa-layer-group text-primary me-2"></i>
+              <span class="fw-medium">Material</span>
+            </div>
+            <span>{{ item.material }}</span>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews Section -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <ul class="nav nav-tabs mb-4" id="reviewTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="reviews-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#reviews"
+            type="button"
+            role="tab"
+            aria-controls="reviews"
+            aria-selected="true"
+          >
+            <i class="fas fa-comments me-2"></i>Reviews ({{ item.reviews|length
+            }})
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="write-review-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#write-review"
+            type="button"
+            role="tab"
+            aria-controls="write-review"
+            aria-selected="false"
+          >
+            <i class="fas fa-edit me-2"></i>Write a Review
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content" id="reviewTabContent">
+        <!-- Reviews Tab -->
+        <div
+          class="tab-pane fade show active"
+          id="reviews"
+          role="tabpanel"
+          aria-labelledby="reviews-tab"
+        >
+          {% if item.reviews %} {% for rev in item.reviews %}
+          <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+              <div
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <div class="d-flex align-items-center">
+                  <div class="me-3">
+                    <div
+                      class="bg-primary text-white rounded-circle p-2 d-flex align-items-center justify-content-center"
+                      style="width: 48px; height: 48px"
+                    >
+                      <i class="fas fa-user"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h5 class="mb-0">{{ rev.user }}</h5>
+                    <div class="text-muted small">
+                      {{ rev.date.strftime('%B %d, %Y') if rev.date else 'Posted
+                      recently' }}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="bg-primary bg-opacity-10 text-primary rounded-pill py-1 px-3 fw-bold"
+                >
+                  {{ rev.rating }}/10
+                </div>
+              </div>
+
+              <div class="mb-2">
+                {% for i in range(1, 6) %} {% if i <= ((rev.rating|int) /
+                2)|round(0, 'floor') %}
+                <i class="fas fa-star text-warning"></i>
+                {% elif i <= ((rev.rating|int) / 2 + 0.5)|round(0, 'floor') %}
+                <i class="fas fa-star-half-alt text-warning"></i>
+                {% else %}
+                <i class="far fa-star text-warning"></i>
+                {% endif %} {% endfor %}
+              </div>
+
+              <p class="mb-0">{{ rev.review }}</p>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>No reviews yet. Be the first
+            to review this product!
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Write Review Tab -->
+        <div
+          class="tab-pane fade"
+          id="write-review"
+          role="tabpanel"
+          aria-labelledby="write-review-tab"
+        >
+          <div class="card shadow-sm">
+            <div class="card-body p-4">
+              <h4 class="mb-4">Share Your Experience</h4>
+
+              <form method="POST">
+                <div class="mb-4">
+                  <label for="rating" class="form-label fw-medium"
+                    >Your Rating</label
+                  >
+                  <div class="d-flex align-items-center">
+                    <div class="rating-input me-3">
+                      <input
+                        type="range"
+                        name="rating"
+                        id="rating"
+                        class="form-range"
+                        min="1"
+                        max="10"
+                        value="5"
+                        oninput="document.getElementById('ratingValue').innerText = this.value"
+                      />
+                    </div>
+                    <div
+                      class="rating-value bg-primary text-white rounded-pill px-3 py-1"
+                    >
+                      <span id="ratingValue">5</span>/10
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <label for="review" class="form-label fw-medium"
+                    >Your Review</label
+                  >
+                  <textarea
+                    name="review"
+                    id="review"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Share your thoughts about this product..."
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary py-2">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Review
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="mt-5">
+    <h3 class="mb-4">You May Also Like</h3>
+
+    <div class="row row-cols-2 row-cols-md-4 g-4">
+      {% if related_products %} {% for product in related_products %}
+      <div class="col">
+        <div class="card h-100 product-card">
+          <a
+            href="{{ url_for('item_detail', item_id=product._id) }}"
+            class="text-decoration-none"
+          >
+            <div class="ratio ratio-1x1">
+              <img
+                src="{{ product.image }}"
+                class="card-img-top"
+                alt="{{ product.name }}"
+              />
+            </div>
+            <div class="card-body">
+              <h5 class="card-title text-truncate">{{ product.name }}</h5>
+              <p class="text-primary fw-bold">{{ product.price }} TL</p>
+
+              {% if product.rating %}
+              <div class="d-flex align-items-center">
+                {% for i in range(1, 6) %} {% if i <= ((product.rating|float) /
+                2)|round(0, 'floor') %}
+                <i class="fas fa-star text-warning small"></i>
+                {% elif i <= ((product.rating|float) / 2 + 0.5)|round(0,
+                'floor') %}
+                <i class="fas fa-star-half-alt text-warning small"></i>
+                {% else %}
+                <i class="far fa-star text-warning small"></i>
+                {% endif %} {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+      </div>
+      {% endfor %} {% else %}
+      <div class="col-12">
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>No related products found.
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <style>
+    .img-cover {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .product-thumbnail {
+      transition: opacity 0.3s;
+    }
+    .product-thumbnail:hover {
+      opacity: 0.8;
+      cursor: pointer;
+    }
+    .product-card {
+      transition: transform 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+  {% endblock %}
+</div>

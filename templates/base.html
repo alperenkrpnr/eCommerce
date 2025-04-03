@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}E-Commerce Application{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap 5 CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <head>
+      <style>
+        /* Global settings */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2980b9;
+  --accent-color: #e74c3c;
+  --dark-color: #2c3e50;
+  --light-color: #ecf0f1;
+  --success-color: #2ecc71;
+  --warning-color: #f39c12;
+  --danger-color: #e74c3c;
+  --text-color: #333333;
+  --light-text: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+body {
+  background-color: #f8f9fa;
+  font-family: "Poppins", sans-serif;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrap {
+  flex: 1;
+  padding: 30px 0;
+}
+
+/* Navbar styling */
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 12px 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.nav-link {
+  font-weight: 500;
+  transition: var(--transition);
+  position: relative;
+  padding: 8px 15px;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--light-color);
+  transition: var(--transition);
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 80%;
+}
+
+/* Card styling */
+.card {
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  border: none;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-img-top {
+  height: 240px;
+  object-fit: cover;
+  transition: var(--transition);
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+/* Button styling */
+.btn {
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  padding: 8px 18px;
+  transition: var(--transition);
+  letter-spacing: 0.3px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Form styling */
+.form-control,
+.form-select {
+  border-radius: var(--border-radius);
+  padding: 10px 15px;
+  border: 1px solid #ced4da;
+  transition: var(--transition);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+}
+
+/* Pagination */
+.pagination .page-link {
+  color: var(--primary-color);
+  border-radius: var(--border-radius);
+  margin: 0 3px;
+  transition: var(--transition);
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* Footer */
+footer {
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  padding: 30px 0;
+  margin-top: auto;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.footer-link {
+  color: var(--light-color);
+  margin: 0 15px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.footer-link:hover {
+  color: var(--primary-color);
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.social-icon {
+  color: var(--light-color);
+  font-size: 1.5rem;
+  margin: 0 10px;
+  transition: var(--transition);
+}
+
+.social-icon:hover {
+  color: var(--primary-color);
+  transform: translateY(-3px);
+}
+
+/* Alert styling */
+.alert {
+  border-radius: var(--border-radius);
+  border: none;
+  box-shadow: var(--box-shadow);
+}
+
+/* Custom badge for ratings */
+.rating-badge {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.rating-badge i {
+  margin-right: 4px;
+  color: #ffd700;
+}
+
+/* Price tag styling */
+.price-tag {
+  background-color: var(--accent-color);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* Category tag */
+.category-tag {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 0;
+  }
+
+  .content-wrap {
+    padding: 20px 0;
+  }
+}
+        </style>
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <!-- Navbar with improved design -->
+    <nav
+      class="navbar navbar-expand-lg navbar-dark"
+      style="background-color: var(--dark-color)"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+          <i class="fas fa-record-vinyl me-2"></i>eCommerce
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index') }}">
+                <i class="fas fa-home me-1"></i> Home
+              </a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('user_profile') }}">
+                <i class="fas fa-user me-1"></i> Profile
+              </a>
+            </li>
+            {% if current_user.role == 'admin' %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                <i class="fas fa-tachometer-alt me-1"></i> Admin
+              </a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+              </a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('login') }}">
+                <i class="fas fa-sign-in-alt me-1"></i> Login
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('register') }}">
+                <i class="fas fa-user-plus me-1"></i> Register
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container content-wrap">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div
+        class="alert alert-{{ category }} alert-dismissible fade show mt-4"
+        role="alert"
+      >
+        {% if category == 'success' %}
+        <i class="fas fa-check-circle me-2"></i>
+        {% elif category == 'danger' %}
+        <i class="fas fa-exclamation-circle me-2"></i>
+        {% elif category == 'warning' %}
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        {% elif category == 'info' %}
+        <i class="fas fa-info-circle me-2"></i>
+        {% endif %} {{ message }}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %} {% endif %} {% endwith %}
+
+      <div class="fade-in">{% block content %}{% endblock %}</div>
+    </div>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <h5 class="mb-3">eCommerce</h5>
+            <p class="mb-0">
+              Redefining your shopping experience with quality and diversity.
+            </p>
+          </div>
+          <div class="col-md-6 text-center text-md-end">
+            <div class="footer-links mb-3">
+              <a href="{{ url_for('index') }}" class="footer-link">Home</a>
+              <a href="#" class="footer-link">About Us</a>
+              <a href="#" class="footer-link">Contact</a>
+              <a href="#" class="footer-link">Privacy Policy</a>
+            </div>
+            <div class="social-icons">
+              <a href="#" class="social-icon"
+                ><i class="fab fa-facebook"></i
+              ></a>
+              <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-icon"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.1)" />
+        <div class="text-center">
+          <p class="mb-0">&copy; 2025 eCommerce. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+      // Initialize tooltips
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Add animation to elements when they enter viewport
+      document.addEventListener("DOMContentLoaded", function () {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("fade-in");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+          }
+        );
+
+        document
+          .querySelectorAll(".card, .section-title, .product-detail")
+          .forEach((el) => {
+            observer.observe(el);
+          });
+      });
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

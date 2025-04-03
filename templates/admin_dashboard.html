@@ -1,0 +1,133 @@
+{% extends "base.html" %} {% block title %}eCommerce - Admin Dashboard{%
+endblock %} {% block content %}
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="display-6 fw-bold">
+      <i class="fas fa-tachometer-alt me-2"></i>Admin Dashboard
+    </h2>
+    <div>
+      <a href="{{ url_for('add_item') }}" class="btn btn-primary">
+        <i class="fas fa-plus-circle me-2"></i>Add New Product
+      </a>
+      <a href="{{ url_for('add_user') }}" class="btn btn-secondary ms-2">
+        <i class="fas fa-user-plus me-2"></i>Add New User
+      </a>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Products Panel -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white py-3">
+          <h4 class="mb-0 text-primary">
+            <i class="fas fa-box me-2"></i>Products
+          </h4>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in items %}
+                <tr>
+                  <td>
+                    <a
+                      href="{{ url_for('item_detail', item_id=item._id) }}"
+                      class="text-decoration-none fw-medium"
+                    >
+                      {{ item.name }}
+                    </a>
+                  </td>
+                  <td>
+                    <span class="badge bg-light text-dark"
+                      >{{ item.category }}</span
+                    >
+                  </td>
+                  <td class="text-end">
+                    <form
+                      action="{{ url_for('remove_item', item_id=item._id) }}"
+                      method="POST"
+                      class="d-inline"
+                    >
+                      <button
+                        type="submit"
+                        class="btn btn-sm btn-outline-danger"
+                      >
+                        <i class="fas fa-trash-alt me-1"></i>Remove
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Users Panel -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-header bg-white py-3">
+          <h4 class="mb-0 text-primary">
+            <i class="fas fa-users me-2"></i>Users
+          </h4>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                <tr>
+                  <td class="fw-medium">{{ user.username }}</td>
+                  <td>
+                    {% if user.role == 'admin' %}
+                    <span class="badge bg-danger">{{ user.role }}</span>
+                    {% else %}
+                    <span class="badge bg-info text-dark">{{ user.role }}</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-end">
+                    {% if user.role != 'admin' %}
+                    <form
+                      action="{{ url_for('remove_user', user_id=user._id) }}"
+                      method="POST"
+                      class="d-inline"
+                    >
+                      <button
+                        type="submit"
+                        class="btn btn-sm btn-outline-danger"
+                      >
+                        <i class="fas fa-trash-alt me-1"></i>Remove
+                      </button>
+                    </form>
+                    {% else %}
+                    <span class="text-muted small">Cannot remove</span>
+                    {% endif %}
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
