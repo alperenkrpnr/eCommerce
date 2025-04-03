@@ -7,7 +7,11 @@ from datetime import datetime
 
 # App and configuration
 app = Flask(__name__)
-app.config.from_pyfile('config.py')  # Load config.py
+if os.path.exists('config.py'):
+    app.config.from_pyfile('config.py')
+else:
+    app.config['MONGO_URI'] = os.environ.get('MONGO_URI')
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 
 mongo = PyMongo(app)  # Initialize connection using Flask-PyMongo
 
